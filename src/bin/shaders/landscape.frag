@@ -156,7 +156,6 @@ vec3 colorScale(float val)
 vec3 gamma(vec3 col) {
     vec3 low = col / 12.92;
     vec3 high = pow((col + 0.055) / 1.055, vec3(2.4));
-
     return mix(low, high, step(vec3(0.04045), col));
 }
 

@@ -12,7 +12,7 @@ use glutin::GlContext;
 
 const ANIMATION_SPEED: f32 = 1.0/50000.0; // Texture units per ms
 
-pub type ColorFormat = gfx::format::Rgba8;
+pub type ColorFormat = gfx::format::Srgba8;
 pub type DepthFormat = gfx::format::DepthStencil;
 
 gfx_defines!{
@@ -114,7 +114,8 @@ pub fn main() {
 }
 
 fn make_transform(elapsed_time: f32, width: f32, height: f32, random_angle: f32) -> Matrix4<f32> {
-    // "The thought is to scale, translate then rotate but this library seems to mess up the order"
+    // "The thought is to scale, translate then rotate. Not sure why I have to rotate before translation
+
     // Scale to fit aspect ratio of screen
     let mut matrix = if width > height {
         Matrix4::<f32>::one() * Matrix4::from_nonuniform_scale(width/height, 1.0, 1.0)
@@ -128,10 +129,6 @@ fn make_transform(elapsed_time: f32, width: f32, height: f32, random_angle: f32)
     // Translate to animate the noise - (will happen before rotation..)
     let translation = elapsed_time * ANIMATION_SPEED;
     matrix = matrix * Matrix4::from_translation(Vector3::new(0.0, 0.0, translation));
-    /*
-    mat4x4_translate_in_place(transform, 0, 0, state.elapsed_time * animation_speed);
-    glUniformMatrix4fv(state.transform_uni, 1, GL_FALSE, *transform);
-    */
     matrix
 
 }
